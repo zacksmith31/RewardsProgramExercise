@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace RewardsProgramExercise
 {
+    
     class RewardsProgram
     {
         static void Main(string[] args)
