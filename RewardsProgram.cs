@@ -4,11 +4,24 @@ using System.Linq;
 
 namespace RewardsProgramExercise
 {
-    
     class RewardsProgram
     {
+        class Transaction{
+            public int CustomerId;
+            public DateTime Timestamp = DateTime.UtcNow;
+            public float Total;
+            public double Points;
+        }
+
+        class TransactionLog{
+            public int CustomerId;
+            public List<Transaction> Transactions;
+            public double TotalRewardPoints;
+        }
+
         static void Main(string[] args)
         {
+            //Sample data
             List<TransactionLog> CustomerTransactionLog  = new List<TransactionLog>()
             {
                 new TransactionLog{
@@ -75,6 +88,7 @@ namespace RewardsProgramExercise
                 }
             };
 
+            //Calculate reward points
             foreach(var t in CustomerTransactionLog){
                 foreach(var v in t.Transactions){
                     v.Points = CalculatePointsOnTransaction(v.Total);
@@ -82,13 +96,14 @@ namespace RewardsProgramExercise
                 t.TotalRewardPoints = t.Transactions.Sum(x => x.Points);
             }
 
+            //Output reward point balances
             Console.WriteLine("Reward Points Summary:");
             foreach(var t in CustomerTransactionLog){
-                Console.WriteLine("Customer #" + t.CustomerId);
-                Console.WriteLine("January - " + t.Transactions.Where(x => x.Timestamp.Month == 1).Sum(x => x.Points));
-                Console.WriteLine("February - " + t.Transactions.Where(x => x.Timestamp.Month == 2).Sum(x => x.Points));
-                Console.WriteLine("March - " + t.Transactions.Where(x => x.Timestamp.Month == 3).Sum(x => x.Points));
-                Console.WriteLine("Total - " + t.TotalRewardPoints);
+                Console.WriteLine($"Customer # {t.CustomerId}");
+                Console.WriteLine($"January - {t.Transactions.Where(x => x.Timestamp.Month == 1).Sum(x => x.Points)}");
+                Console.WriteLine($"February - {t.Transactions.Where(x => x.Timestamp.Month == 2).Sum(x => x.Points)}");
+                Console.WriteLine($"March - {t.Transactions.Where(x => x.Timestamp.Month == 3).Sum(x => x.Points)}");
+                Console.WriteLine($"Total - {t.TotalRewardPoints}");
                 Console.WriteLine("----------");
             }
         }
@@ -116,23 +131,6 @@ namespace RewardsProgramExercise
             }
 
             return pointTally;
-        }
-
-        class Transaction{
-            public int CustomerId;
-            public DateTime Timestamp = DateTime.UtcNow;
-            public float Total;
-            public double Points;
-        }
-
-        class TransactionLog{
-            public int CustomerId;
-            private List<Transaction> transactions;
-            public List<Transaction> Transactions{
-                get {return transactions;}
-                set {transactions = value;}
-            }
-            public double TotalRewardPoints;
         }
     }
 }
