@@ -88,15 +88,11 @@ namespace RewardsProgramExercise
                 }
             };
 
-            //Calculate reward points
-            foreach(var t in CustomerTransactionLog){
-                t.Transactions.Select(x => CalculatePointsOnTransaction(x.Total));
-                t.TotalRewardPoints = t.Transactions.Sum(x => x.Points);
-            }
-
             //Output reward point balances
             Console.WriteLine("Reward Points Summary:");
             foreach(var t in CustomerTransactionLog){
+                t.Transactions.Select(x => CalculatePointsOnTransaction(x.Total));
+                t.TotalRewardPoints = t.Transactions.Sum(x => x.Points);
                 Console.WriteLine($"Customer # {t.CustomerId}");
                 Console.WriteLine($"January - {t.Transactions.Where(x => x.Timestamp.Month == 1).Sum(x => x.Points)}");
                 Console.WriteLine($"February - {t.Transactions.Where(x => x.Timestamp.Month == 2).Sum(x => x.Points)}");
