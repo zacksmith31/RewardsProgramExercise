@@ -90,9 +90,7 @@ namespace RewardsProgramExercise
 
             //Calculate reward points
             foreach(var t in CustomerTransactionLog){
-                foreach(var v in t.Transactions){
-                    v.Points = CalculatePointsOnTransaction(v.Total);
-                }
+                t.Transactions.Select(x => CalculatePointsOnTransaction(x.Total));
                 t.TotalRewardPoints = t.Transactions.Sum(x => x.Points);
             }
 
